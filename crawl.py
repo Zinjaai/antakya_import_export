@@ -12,8 +12,8 @@ with AntakyaConnection() as connection:
     articles = [COLUMN_NAMES]
     categories = set()
 
-    # connection.visit(BASE_URL + 'food.do?group=16')
-    connection.visit(BASE_URL + 'non_food.jsp?group=86')
+    connection.visit(BASE_URL + 'food.do?group=16')
+    # connection.visit(BASE_URL + 'non_food.jsp?group=86')
     soup = BeautifulSoup(connection.html, 'html.parser')
     selector = soup.find('select')
     for child in selector.contents:
@@ -55,7 +55,7 @@ with AntakyaConnection() as connection:
                         gesamt_preis_mal10 = int('{:.2f}'.format(gesamt_preis).replace('.', ''))
                         einzel_preis_mal10 = int('{:.2f}'.format(einzel_preis).replace('.', ''))
                         if einzel_preis_mal10 == 0:
-	                        print(kategorie, name, 'costs zero, an error from antakya')			
+	                        print(kategorie, name, 'costs zero, an error from antakya, this article is ignored')
                         	continue
                         if gesamt_preis_mal10 % einzel_preis_mal10 > 0:
                             print('gesamt und einzelpreis passen nicht bei {} {} {}'.format(name, gesamt_preis,
@@ -92,6 +92,6 @@ with AntakyaConnection() as connection:
         for article in articles:
             file.write(article + '\n')
 
-    print('Create these categories in the foodsoft once:')
+    print('\n Wrote "antakya_articles.csv"\nCreate these categories in the foodsoft once:')
     for c in categories:
         print(c)
