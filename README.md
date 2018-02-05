@@ -7,6 +7,8 @@
 * Install Python modules by entering in the command prompt:
 	* ```pip3 install beautifulsoup4 splinter```
 
+Manjaro: Splinter needs geckodriver (which is in the repos).
+
 ### Run
 * Edit the login information inside the file 'antakya_connection.py'
 * Otherwise same use as FoodCoopOrderer 

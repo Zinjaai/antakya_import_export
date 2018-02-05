@@ -6,13 +6,14 @@ from bs4 import BeautifulSoup
 from antakya_connection import *
 
 COLUMN_NAMES = ';{bestellnummer};{name};;;;{einheit};{preis};{mehrwertsteuer};{pfand};{gebindegroesse};;;{kategorie}'
-mehrwertsteuer = '0'
+mehrwertsteuer = '7'
 
 with AntakyaConnection() as connection:
     articles = [COLUMN_NAMES]
     categories = set()
 
-    connection.visit(BASE_URL + 'food.do?group=16')
+    # connection.visit(BASE_URL + 'food.do?group=16')
+    connection.visit(BASE_URL + 'non_food.jsp?group=86')
     soup = BeautifulSoup(connection.html, 'html.parser')
     selector = soup.find('select')
     for child in selector.contents:
@@ -53,6 +54,9 @@ with AntakyaConnection() as connection:
                     else:
                         gesamt_preis_mal10 = int('{:.2f}'.format(gesamt_preis).replace('.', ''))
                         einzel_preis_mal10 = int('{:.2f}'.format(einzel_preis).replace('.', ''))
+                        if einzel_preis_mal10 == 0:
+	                        print(kategorie, name, 'costs zero, an error from antakya')			
+                        	continue
                         if gesamt_preis_mal10 % einzel_preis_mal10 > 0:
                             print('gesamt und einzelpreis passen nicht bei {} {} {}'.format(name, gesamt_preis,
                                                                                             einzel_preis))
